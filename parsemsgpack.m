@@ -14,8 +14,11 @@
 % voluntary contributions made by Christopher Nadler (cnadler86)
 % This code is licensed under the BSD 3-clause license
 
-function [obj, idx] = parsemsgpack(bytes)
-    [obj, idx] = parse(uint8(bytes(:)), 1);
+function [obj, idx] = parsemsgpack(bytes,idx)
+    if ~exist("idx","var")
+        idx = 1;
+    end
+    [obj, idx] = parse(uint8(bytes(:)), idx);
 end
 
 function [obj, idx] = parse(bytes, idx)
