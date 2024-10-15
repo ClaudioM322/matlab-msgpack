@@ -183,8 +183,17 @@ function [out, idx] = parsearray(len, bytes, idx)
 end
 
 function [out, idx] = parsemap(len, bytes, idx)
-    out = containers.Map();
-    for n=1:len
+    [key1, idx] = parse(bytes, idx);
+    [obj1, idx] = parse(bytes, idx);
+    predefined_values_types = {'char','logical','double','single','int8','uint8','int16','uint16','int32','uint32','int64','uint64'};
+    key_type = class(key1);
+    values_type = class(obj1);
+    if ~ismember(values_type,predefined_values_types)
+        values_type = 'any';
+    end
+    out = containers.Map('KeyType',key_type,'ValueType',values_type);
+    out(key1) = obj1;
+    for n=2:len
         [key, idx] = parse(bytes, idx);
         [out(key), idx] = parse(bytes, idx);
     end
