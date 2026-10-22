@@ -186,6 +186,10 @@ function [out, idx] = parsearray(len, bytes, idx)
 end
 
 function [out, idx] = parsemap(len, bytes, idx)
+    if len == 0 % empty map: nothing to read, the next bytes belong to the parent
+        out = containers.Map();
+        return
+    end
     [key1, idx] = parse(bytes, idx);
     [obj1, idx] = parse(bytes, idx);
     % predefined_values_types = {'char','logical','double','single','int8','uint8','int16','uint16','int32','uint32','int64','uint64'};
